@@ -1,53 +1,110 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+
+const navLinks = [
+  { href: '/', label: 'index' },
+  { href: '/services', label: 'services' },
+  { href: '/systems-work', label: 'work' },
+  { href: '/about', label: 'about' },
+]
 
 export default function Header() {
+  const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-sm">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
           <Link 
             href="/" 
-            className="relative text-xl font-bold text-foreground transition-all duration-200 group"
+            className="group relative flex items-center gap-2"
           >
-            <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              Rofeyy
+            <span className="text-accent text-lg">{'>'}</span>
+            <span className="text-lg font-bold text-foreground glitch-hover">
+              rofeyy
             </span>
-            <span className="absolute inset-0 group-hover:opacity-0 transition-opacity duration-200">
-              Rofeyy
-            </span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 group-hover:w-full transition-all duration-300" />
+            <span className="w-2 h-4 bg-accent/80 animate-cursor-blink" />
           </Link>
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-sm font-medium text-gray-400 hover:text-foreground transition-colors">
-              Home
-            </Link>
-            <Link href="/services" className="text-sm font-medium text-gray-400 hover:text-foreground transition-colors">
-              Services
-            </Link>
-            <Link href="/systems-work" className="text-sm font-medium text-gray-400 hover:text-foreground transition-colors">
-              Systems & Work
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-gray-400 hover:text-foreground transition-colors">
-              About
-            </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link, index) => (
+              <Link 
+                key={link.href}
+                href={link.href} 
+                className={`
+                  relative px-4 py-2 text-sm font-medium transition-colors
+                  ${pathname === link.href 
+                    ? 'text-accent' 
+                    : 'text-muted hover:text-foreground'
+                  }
+                `}
+              >
+                <span className="text-muted mr-1">{String(index).padStart(2, '0')}.</span>
+                {link.label}
+                {pathname === link.href && (
+                  <span className="absolute bottom-0 left-4 right-4 h-px bg-accent" />
+                )}
+              </Link>
+            ))}
+            <div className="w-px h-6 bg-border mx-2" />
             <Link 
               href="/contact" 
-              className="text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+              className="ml-2 px-4 py-2 bg-accent hover:bg-accent-dim text-background text-sm font-bold transition-all hover:scale-[1.02]"
             >
-              Contact
+              contact()
             </Link>
           </div>
-          <div className="md:hidden">
-            <Link 
-              href="/contact" 
-              className="text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors"
-            >
-              Contact
-            </Link>
-          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            aria-label="Toggle menu"
+          >
+            <span className={`w-6 h-0.5 bg-foreground transition-transform ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-6 h-0.5 bg-foreground transition-opacity ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-6 h-0.5 bg-foreground transition-transform ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-border">
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link, index) => (
+                <Link 
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`
+                    px-4 py-3 text-sm font-medium transition-colors
+                    ${pathname === link.href 
+                      ? 'text-accent bg-accent/10' 
+                      : 'text-muted hover:text-foreground hover:bg-card'
+                    }
+                  `}
+                >
+                  <span className="text-muted mr-2">{String(index).padStart(2, '0')}.</span>
+                  {link.label}
+                </Link>
+              ))}
+              <Link 
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mx-4 mt-2 px-4 py-3 bg-accent hover:bg-accent-dim text-background text-sm font-bold text-center transition-all"
+              >
+                contact()
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
     </header>
   )
 }
-

@@ -3,8 +3,8 @@ import Link from 'next/link'
 import ProjectCard from '@/components/ProjectCard'
 
 export const metadata: Metadata = {
-  title: 'Projects & Case Studies - Backend Engineering Solutions',
-  description: 'Real-world backend engineering projects: appointment automation, lead processing systems, data extraction automation, and scalable API architectures.',
+  title: 'Projects & Case Studies',
+  description: 'Real-world software projects: web applications, automation systems, APIs, and full-stack solutions.',
 }
 
 const projects = [
@@ -30,7 +30,7 @@ const projects = [
     result: 'Reduced manual data entry time from hours to minutes per month. 99% accuracy in data extraction.'
   },
   {
-    title: 'Scalable Backend API System',
+    title: 'Scalable API System',
     problem: 'Client needed a robust backend to support their growing web application with high traffic and complex business logic, but their existing system couldn\'t scale.',
     solution: 'Architected and built a scalable REST API with proper authentication, rate limiting, caching, and database optimization. Implemented microservices architecture for critical components.',
     tech: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'AWS', 'Docker'],
@@ -56,16 +56,21 @@ export default function ProjectsPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        {/* Header */}
+        <div className="mb-16">
+          <div className="flex items-center gap-3 text-muted mb-4">
+            <span className="text-terminal-green">$</span>
+            <span className="font-mono text-sm">ls ./projects --all</span>
+          </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
             Projects & Case Studies
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Real solutions for real business problems. Each project focuses on backend engineering, automation, and scalable systems.
+          <p className="text-lg text-muted max-w-2xl">
+            Real solutions for real business problems. From web apps to automation systems.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-12">
           {projects.map((project, index) => (
             <ProjectCard
               key={index}
@@ -78,21 +83,20 @@ export default function ProjectsPage() {
           ))}
         </div>
 
-        <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-8 text-center">
+        {/* CTA */}
+        <div className="border border-border bg-card p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Have a Project in Mind?</h2>
-          <p className="text-gray-400 mb-6">
-            Let's discuss how I can help you build a scalable backend or automate your workflows.
+          <p className="text-muted mb-6">
+            Let&apos;s discuss how I can help you build your next application.
           </p>
           <Link
             href="/contact"
-            className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-accent hover:bg-accent-dim text-background font-bold transition-all hover:scale-[1.02]"
           >
-            Get in Touch
+            ./start-project →
           </Link>
         </div>
       </div>
     </div>
   )
 }
-
-

@@ -2,104 +2,116 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'About - Software Engineer | Systems, Automation & Scalable Applications',
-  description: 'Learn about Rofeyy, a software engineer specializing in building systems that actually work in the real world.',
+  title: 'About - Full-Stack Software Engineer',
+  description: 'Learn about Rofeyy, a full-stack software engineer building web applications, automation, and scalable systems.',
 }
 
 export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 text-muted mb-4">
+            <span className="text-terminal-green">$</span>
+            <span className="font-mono text-sm">whoami --verbose</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold">
             About
           </h1>
         </div>
 
-        <div className="prose prose-invert max-w-none space-y-6 text-lg text-gray-300 leading-relaxed">
+        <div className="space-y-8 text-lg text-muted leading-relaxed">
           <p>
-            I'm a software engineer who builds systems designed to last. My work focuses on creating 
-            reliable, scalable solutions that solve real business problems.
+            I&apos;m a full-stack software engineer who builds applications designed to last. From 
+            frontend interfaces to backend systems, I create reliable solutions that solve real problems.
           </p>
 
           <p>
-            I design architectures that scale, build automation that saves time, and write code that's 
-            maintainable. I've built production systems handling thousands of requests daily, integrated 
-            complex services, and automated processes that previously required hours of manual work.
+            I build responsive web apps, design scalable architectures, and automate repetitive tasks. 
+            I&apos;ve shipped production applications used by thousands, integrated complex services, 
+            and streamlined workflows that previously required hours of manual work.
           </p>
 
-          <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">What I Do</h2>
-          
-          <p>
-            I build software systems—web applications, automation workflows, and scalable architectures. 
-            This includes:
-          </p>
+          {/* What I Do */}
+          <div className="border border-border bg-card p-6 mt-8">
+            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+              <span className="text-accent">//</span> What I Do
+            </h2>
+            <ul className="space-y-3 text-muted">
+              {[
+                'Build full-stack web applications with React, Next.js, and Node.js',
+                'Design and implement scalable APIs and databases',
+                'Create automation that eliminates repetitive work',
+                'Integrate services and platforms seamlessly',
+                'Write maintainable, well-documented code',
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="text-terminal-green mt-1">▸</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Building scalable systems that handle growth</li>
-            <li>Designing databases and APIs optimized for performance</li>
-            <li>Creating automation that eliminates repetitive work</li>
-            <li>Integrating services and platforms seamlessly</li>
-            <li>Architecting systems that evolve with your business</li>
-            <li>Writing code that's maintainable and well-documented</li>
-          </ul>
+          {/* Approach */}
+          <div className="border border-border bg-card p-6">
+            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+              <span className="text-accent">//</span> My Approach
+            </h2>
+            <p className="text-muted">
+              I build software designed to last, not just to impress. My approach is practical: 
+              understand the problem, design simple solutions, and build for the long term. 
+              No over-engineering, no unnecessary complexity.
+            </p>
+          </div>
 
-          <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">My Approach</h2>
-
-          <p>
-            I build software systems designed to last, not just to impress. My approach is practical: 
-            understand the problem, design simple solutions, automate what can be automated, and build for 
-            the long term.
-          </p>
-
-          <p>
-            I work with businesses that need <strong className="text-foreground">real solutions</strong>—systems 
-            that solve actual problems. Whether it's automating a manual process, building an application that 
-            scales, or integrating services that need to work together seamlessly, I focus on delivering value 
-            that makes a measurable difference.
-          </p>
-
-          <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">Experience & Expertise</h2>
-
-          <p>
-            I have real-world production experience building systems that businesses depend on. My expertise 
-            spans system engineering, automation, cloud infrastructure, and API development. I've worked 
-            with technologies like Java, Spring Boot, Node.js, AWS, PostgreSQL, and various third-party APIs.
-          </p>
-
-          <p>
-            I'm particularly skilled in <strong className="text-foreground">automation</strong>—identifying 
-            repetitive processes and building systems that handle them automatically. This includes everything 
-            from booking systems and lead processing to data extraction and report generation.
-          </p>
+          {/* Tech */}
+          <div className="border border-border bg-card p-6">
+            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+              <span className="text-accent">//</span> Technologies
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {['React', 'Next.js', 'TypeScript', 'Node.js', 'Java', 'Spring Boot', 'PostgreSQL', 'AWS', 'Python', 'Tailwind CSS'].map((tech) => (
+                <span 
+                  key={tech}
+                  className="text-sm font-mono px-3 py-1 bg-accent/10 text-accent border border-accent/20"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
+        {/* CTA */}
         <div className="mt-12 text-center">
           <Link
             href="/contact"
-            className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-600/20"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dim text-background font-bold transition-all hover:scale-[1.02] glow-box"
           >
-            Let's Work Together
+            ./work-together →
           </Link>
         </div>
 
-        <div className="mt-12 border-t border-gray-800 pt-8">
-          <div className="flex justify-center space-x-6">
+        {/* Social links */}
+        <div className="mt-12 pt-8 border-t border-border">
+          <div className="flex justify-center gap-6">
             <a 
               href="https://github.com/rofey" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-foreground transition-colors"
+              className="text-muted hover:text-accent transition-colors font-mono text-sm"
             >
-              GitHub
+              [github]
             </a>
             <a 
               href="https://linkedin.com/in/rofey" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-foreground transition-colors"
+              className="text-muted hover:text-accent transition-colors font-mono text-sm"
             >
-              LinkedIn
+              [linkedin]
             </a>
           </div>
         </div>

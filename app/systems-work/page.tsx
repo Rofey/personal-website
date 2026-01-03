@@ -3,8 +3,8 @@ import Link from 'next/link'
 import SystemWorkCard from '@/components/SystemWorkCard'
 
 export const metadata: Metadata = {
-  title: 'Systems & Work - Software Engineering Solutions',
-  description: 'Real-world software engineering projects: appointment automation, lead processing systems, data extraction automation, and scalable API architectures.',
+  title: 'Systems & Work - Software Projects',
+  description: 'Real-world software projects: web applications, automation systems, APIs, and full-stack solutions.',
 }
 
 const systems = [
@@ -56,16 +56,21 @@ export default function SystemsWorkPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        {/* Header */}
+        <div className="mb-16">
+          <div className="flex items-center gap-3 text-muted mb-4">
+            <span className="text-terminal-green">$</span>
+            <span className="font-mono text-sm">ls ./work --detailed</span>
+          </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
             Systems & Work
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-muted max-w-2xl">
             Real problems, real solutions, real results. Each system is built to solve actual business challenges.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-12">
           {systems.map((system, index) => (
             <SystemWorkCard
               key={index}
@@ -78,20 +83,20 @@ export default function SystemsWorkPage() {
           ))}
         </div>
 
-        <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-8 text-center">
+        {/* CTA */}
+        <div className="border border-border bg-card p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Have a System to Build?</h2>
-          <p className="text-gray-400 mb-6">
-            Let's discuss how I can help you build scalable software or automate your workflows.
+          <p className="text-muted mb-6">
+            Let&apos;s discuss how I can help with your next project.
           </p>
           <Link
             href="/contact"
-            className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-600/20"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dim text-background font-bold transition-all hover:scale-[1.02] glow-box"
           >
-            Get in Touch
+            ./start-project →
           </Link>
         </div>
       </div>
     </div>
   )
 }
-

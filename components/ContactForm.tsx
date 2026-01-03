@@ -3,134 +3,118 @@
 import { useState } from 'react'
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    message: '',
-  })
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('sending')
 
-    // In a real implementation, you would send this to an API endpoint
-    // For now, we'll simulate a submission
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
     try {
-      // TODO: Replace with actual API endpoint
-      // await fetch('/api/contact', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData),
-      // })
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      setStatus('success')
-      setFormData({ name: '', email: '', company: '', message: '' })
-    } catch (error) {
+      const response = await fetch('https://formspree.io/f/meeozyzy', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+        },
+      })
+
+      if (response.ok) {
+        setStatus('success')
+        form.reset()
+      } else {
+        setStatus('error')
+      }
+    } catch {
       setStatus('error')
     }
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }))
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-2">
-          Name *
+        <label htmlFor="name" className="block text-sm font-mono text-muted mb-2">
+          <span className="text-accent">$</span> name <span className="text-terminal-red">*</span>
         </label>
         <input
           type="text"
           id="name"
           name="name"
           required
-          value={formData.name}
-          onChange={handleChange}
-          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-foreground focus:outline-none focus:border-blue-600"
+          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors"
+          placeholder="Your name"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium mb-2">
-          Email *
+        <label htmlFor="email" className="block text-sm font-mono text-muted mb-2">
+          <span className="text-accent">$</span> email <span className="text-terminal-red">*</span>
         </label>
         <input
           type="email"
           id="email"
           name="email"
           required
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-foreground focus:outline-none focus:border-blue-600"
+          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors"
+          placeholder="you@example.com"
         />
       </div>
 
       <div>
-        <label htmlFor="company" className="block text-sm font-medium mb-2">
-          Company (optional)
+        <label htmlFor="company" className="block text-sm font-mono text-muted mb-2">
+          <span className="text-accent">$</span> company <span className="text-muted">(optional)</span>
         </label>
         <input
           type="text"
           id="company"
           name="company"
-          value={formData.company}
-          onChange={handleChange}
-          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-foreground focus:outline-none focus:border-blue-600"
+          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors"
+          placeholder="Your company"
         />
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium mb-2">
-          Message *
+        <label htmlFor="message" className="block text-sm font-mono text-muted mb-2">
+          <span className="text-accent">$</span> message <span className="text-terminal-red">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           required
           rows={6}
-          value={formData.message}
-          onChange={handleChange}
-          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-foreground focus:outline-none focus:border-blue-600 resize-none"
-          placeholder="Tell me about your project, what you want to build or automate..."
+          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors resize-none"
+          placeholder="Tell me about your project..."
         />
       </div>
 
       {status === 'success' && (
-        <div className="p-4 bg-green-900/50 border border-green-700 rounded-lg text-green-300">
-          Thank you! I'll get back to you soon.
+        <div className="p-4 bg-terminal-green/10 border border-terminal-green/30 text-terminal-green font-mono text-sm">
+          <span className="text-terminal-green">✓</span> Message sent successfully. I&apos;ll get back to you soon.
         </div>
       )}
 
       {status === 'error' && (
-        <div className="p-4 bg-red-900/50 border border-red-700 rounded-lg text-red-300">
-          Something went wrong. Please try again or reach out via email.
+        <div className="p-4 bg-terminal-red/10 border border-terminal-red/30 text-terminal-red font-mono text-sm">
+          <span className="text-terminal-red">✗</span> Something went wrong. Please try again or email directly.
         </div>
       )}
 
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="w-full px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors"
+        className="w-full px-8 py-4 bg-accent hover:bg-accent-dim disabled:opacity-50 disabled:cursor-not-allowed text-background font-bold transition-all hover:scale-[1.01] glow-box"
       >
-        {status === 'sending' ? 'Sending...' : 'Send Message'}
+        {status === 'sending' ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+            Sending...
+          </span>
+        ) : (
+          './send-message →'
+        )}
       </button>
-
-      <p className="text-sm text-gray-500 text-center">
-        Note: This form is a placeholder. In production, connect it to your email service or API endpoint.
-        <br />
-        Consider using services like Formspree, SendGrid, or building a custom API endpoint.
-      </p>
     </form>
   )
 }
-
-

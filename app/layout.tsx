@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { StructuredData } from '@/lib/seo'
 
-const inter = Inter({ 
+const jetbrainsMono = JetBrains_Mono({ 
   subsets: ['latin'],
   display: 'swap',
   preload: true,
+  variable: '--font-mono',
 })
 
 export const metadata: Metadata = {
@@ -57,13 +58,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${jetbrainsMono.variable}`}>
       <head>
         <StructuredData />
       </head>
-      <body className={inter.className}>
+      <body className={`${jetbrainsMono.className} antialiased`}>
+        {/* Scanline overlay for CRT effect */}
+        <div className="scanlines" aria-hidden="true" />
+        {/* Grid background */}
+        <div className="grid-bg" aria-hidden="true" />
         <Header />
-        <main className="min-h-screen">
+        <main className="min-h-screen relative z-10">
           {children}
         </main>
         <Footer />
@@ -71,4 +76,3 @@ export default function RootLayout({
     </html>
   )
 }
-

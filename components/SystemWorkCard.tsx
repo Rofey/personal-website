@@ -14,64 +14,54 @@ export default function SystemWorkCard({
   tech,
 }: SystemWorkCardProps) {
   return (
-    <div className="group p-8 rounded-lg border border-gray-800 bg-gray-900/50 hover:border-gray-700 transition-all duration-300">
-      <h3 className="text-2xl font-bold mb-6 group-hover:text-blue-400 transition-colors">
-        {title}
-      </h3>
+    <div className="group relative bg-card border border-border hover:border-accent/50 transition-all duration-300 overflow-hidden">
+      {/* Header bar */}
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-card-hover">
+        <span className="w-2 h-2 rounded-full bg-terminal-red" />
+        <span className="w-2 h-2 rounded-full bg-accent" />
+        <span className="w-2 h-2 rounded-full bg-terminal-green" />
+        <span className="ml-2 text-xs text-muted font-mono truncate">{title.toLowerCase().replace(/\s+/g, '-')}.log</span>
+      </div>
+      
+      <div className="p-6 space-y-5">
+        <h3 className="text-xl font-bold group-hover:text-accent transition-colors">
+          {title}
+        </h3>
 
-      <div className="space-y-6">
-        {/* What Existed */}
-        <div className="relative pl-6 border-l-2 border-gray-800">
-          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gray-800 group-hover:bg-gray-700 transition-colors" />
-          <div>
-            <h4 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">
-              What Existed
-            </h4>
-            <p className="text-gray-300">{whatExisted}</p>
+        {/* Before state */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <span className="text-terminal-red">●</span>
+            <span className="text-muted uppercase tracking-wider">BEFORE</span>
           </div>
+          <p className="text-muted text-sm pl-4 border-l border-terminal-red/30">{whatExisted}</p>
         </div>
 
-        {/* Arrow */}
-        <div className="flex items-center justify-center py-2">
-          <div className="w-12 h-0.5 bg-gray-700 group-hover:bg-blue-600 transition-colors" />
-          <div className="w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-gray-700 group-hover:border-t-blue-600 transition-colors ml-1" />
-        </div>
-
-        {/* What Was Built */}
-        <div className="relative pl-6 border-l-2 border-blue-600">
-          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-600" />
-          <div>
-            <h4 className="text-sm font-semibold text-blue-400 mb-2 uppercase tracking-wide">
-              What Was Built
-            </h4>
-            <p className="text-gray-300">{whatWasBuilt}</p>
+        {/* Built state */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <span className="text-accent">●</span>
+            <span className="text-muted uppercase tracking-wider">BUILT</span>
           </div>
+          <p className="text-foreground/80 text-sm pl-4 border-l border-accent/30">{whatWasBuilt}</p>
         </div>
 
-        {/* Arrow */}
-        <div className="flex items-center justify-center py-2">
-          <div className="w-12 h-0.5 bg-gray-700 group-hover:bg-blue-600 transition-colors" />
-          <div className="w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-gray-700 group-hover:border-t-blue-600 transition-colors ml-1" />
-        </div>
-
-        {/* What Changed */}
-        <div className="relative pl-6 border-l-2 border-green-600">
-          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-green-600" />
-          <div>
-            <h4 className="text-sm font-semibold text-green-400 mb-2 uppercase tracking-wide">
-              What Changed
-            </h4>
-            <p className="text-gray-300 font-medium">{whatChanged}</p>
+        {/* Result state */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <span className="text-terminal-green">●</span>
+            <span className="text-muted uppercase tracking-wider">RESULT</span>
           </div>
+          <p className="text-terminal-green/90 text-sm pl-4 border-l border-terminal-green/30 font-medium">{whatChanged}</p>
         </div>
 
         {/* Tech Stack */}
-        <div className="pt-4 border-t border-gray-800">
+        <div className="pt-4 border-t border-border">
           <div className="flex flex-wrap gap-2">
             {tech.map((t, index) => (
               <span
                 key={index}
-                className="text-xs px-3 py-1 bg-gray-800 rounded-full text-gray-300 group-hover:bg-gray-700 transition-colors"
+                className="text-xs font-mono px-2 py-1 bg-accent/10 text-accent border border-accent/20 group-hover:border-accent/40 transition-colors"
               >
                 {t}
               </span>
@@ -79,8 +69,9 @@ export default function SystemWorkCard({
           </div>
         </div>
       </div>
+      
+      {/* Hover accent */}
+      <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-accent to-terminal-green group-hover:w-full transition-all duration-500" />
     </div>
   )
 }
-
-

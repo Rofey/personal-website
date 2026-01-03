@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 
 export default function InteractivePrompt() {
   const [input, setInput] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
   const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,27 +30,43 @@ export default function InteractivePrompt() {
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="relative">
-        <div className="flex items-center border border-gray-700 rounded-lg bg-gray-900/50 focus-within:border-gray-600 transition-colors">
+      {/* Terminal-style prompt */}
+      <div className={`
+        border transition-all duration-300
+        ${isFocused ? 'border-accent glow-box' : 'border-border'}
+        bg-card
+      `}>
+        {/* Terminal header */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-border text-xs text-muted">
+          <span className="w-2 h-2 rounded-full bg-terminal-red" />
+          <span className="w-2 h-2 rounded-full bg-accent" />
+          <span className="w-2 h-2 rounded-full bg-terminal-green" />
+          <span className="ml-2 font-mono">query-engine</span>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="flex items-center">
+          <span className="pl-4 text-terminal-green font-mono">$</span>
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="What do you want to build or automate?"
-            className="flex-1 px-4 py-3 bg-transparent text-foreground placeholder-gray-500 focus:outline-none"
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder="describe your project..."
+            className="flex-1 px-3 py-3 bg-transparent text-foreground placeholder-muted/50 focus:outline-none font-mono text-sm"
           />
           <button
             type="submit"
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-r-lg transition-colors"
+            className="px-6 py-3 bg-accent hover:bg-accent-dim text-background font-bold text-sm transition-colors"
           >
-            Submit
+            run
           </button>
-        </div>
-      </form>
-      <p className="text-sm text-gray-500 mt-2 text-center">
-        Describe your project and I'll show you relevant services
+        </form>
+      </div>
+      
+      <p className="text-xs text-muted mt-3 text-center font-mono">
+        <span className="text-accent">hint:</span> try "automation", "api", "dashboard", or "ecommerce"
       </p>
     </div>
   )
 }
-

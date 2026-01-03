@@ -3,21 +3,75 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  /* Core colors - Amber terminal aesthetic */
+  --background: #050505;
+  --foreground: #e8e4d9;
+  --accent: #f59e0b;
+  --accent-dim: #b45309;
+  --accent-glow: rgba(245, 158, 11, 0.15);
+  --terminal-green: #22c55e;
+  --terminal-red: #ef4444;
+  --muted: #525252;
+  --border: #262626;
+  --card: #0a0a0a;
+  --card-hover: #111111;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-  }
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--background);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-mono, 'JetBrains Mono', 'Fira Code', 'Consolas', monospace);
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Grid background - engineering paper feel */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle scanlines for CRT effect */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.3;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 1;
 }
 
 @layer utilities {
@@ -26,16 +80,312 @@ body {
   }
 }
 
-@keyframes pulse-slow {
+/* Terminal window styling */
+.terminal-window {
+  background: var(--card);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.terminal-window::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27ca40; }
+
+/* Glitch effect */
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 0 var(--terminal-red), -2px 0 var(--accent);
+    transform: translate(0);
+  }
+  20% {
+    text-shadow: -2px 0 var(--terminal-red), 2px 0 var(--accent);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    text-shadow: 2px 0 var(--terminal-red), -2px 0 var(--accent);
+    transform: translate(2px, -2px);
+  }
+  60% {
+    text-shadow: -2px 0 var(--terminal-red), 2px 0 var(--accent);
+    transform: translate(-2px, 0);
+  }
+  80% {
+    text-shadow: 2px 0 var(--terminal-red), -2px 0 var(--accent);
+    transform: translate(2px, 0);
+  }
+  100% {
+    text-shadow: none;
+    transform: translate(0);
+  }
+}
+
+.glitch-hover:hover {
+  animation: glitch 0.3s ease-in-out;
+}
+
+/* Cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Typing animation */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40) forwards;
+}
+
+/* Glow effect */
+.glow {
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 40px var(--accent-dim);
+}
+
+.glow-box {
+  box-shadow: 0 0 20px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* ASCII border style */
+.ascii-border {
+  position: relative;
+}
+
+.ascii-border::before {
+  content: '┌──────────────────────────────────────────────────────────────┐';
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ascii-border::after {
+  content: '└──────────────────────────────────────────────────────────────┘';
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Command prompt style */
+.prompt::before {
+  content: '$ ';
+  color: var(--accent);
+}
+
+/* Status indicators */
+.status-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-online::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--terminal-green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
   0%, 100% {
-    opacity: 0.4;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
   }
   50% {
-    opacity: 0.6;
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
   }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Stagger reveal animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+.animate-in {
+  animation: fadeInUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Marquee for tech ticker */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Button magnetic effect placeholder class */
+.magnetic-btn {
+  transition: transform 0.2s ease-out;
+}
+
+/* Brutalist link style */
+.brutal-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--foreground);
+}
+
+.brutal-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.brutal-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Card with corner accents */
+.corner-card {
+  position: relative;
+}
+
+.corner-card::before,
+.corner-card::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent);
+}
+
+.corner-card::before {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-card::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Code block styling */
+code {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  background: rgba(245, 158, 11, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
+/* Horizontal rule - circuit board style */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent) 20%,
+    var(--accent) 80%,
+    transparent
+  );
+  position: relative;
+}
+
+hr::before {
+  content: '◆';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background);
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 8px;
+}
