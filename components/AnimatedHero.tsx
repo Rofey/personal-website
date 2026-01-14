@@ -54,8 +54,8 @@ export default function AnimatedHero() {
       <div className="absolute top-20 right-10 opacity-10 pointer-events-none">
         <IconSparkles size={120} className="text-accent-secondary animate-pulse-slow" />
       </div>
-      <div className="absolute bottom-20 left-10 opacity-10 pointer-events-none">
-        <IconSparkles size={80} className="text-accent-tertiary animate-pulse-slow" style={{ animationDelay: '1s' }} />
+      <div className="absolute bottom-20 left-10 opacity-10 pointer-events-none" style={{ animationDelay: '1s' }}>
+        <IconSparkles size={80} className="text-accent-tertiary animate-pulse-slow" />
       </div>
 
       {/* Main content */}
