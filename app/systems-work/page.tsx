@@ -7,20 +7,39 @@ export const metadata: Metadata = {
   description: 'Real-world software projects: web applications, automation systems, APIs, and full-stack solutions.',
 }
 
-const systems = [
+interface System {
+  title: string
+  whatExisted: string
+  whatWasBuilt: string
+  whatChanged: string
+  tech: string[]
+  link?: string
+}
+
+const systems: System[] = [
   {
-    title: 'Scalable API System',
-    whatExisted: 'Client needed a robust backend to support their growing web application with high traffic and complex business logic, but their existing system couldn\'t scale.',
-    whatWasBuilt: 'A scalable REST API with proper authentication, rate limiting, caching, and database optimization. Implemented microservices architecture for critical components.',
-    whatChanged: 'Handles 10,000+ requests per day with 99.9% uptime and sub-200ms response times. Successfully scaled to handle 5x traffic growth.',
-    tech: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'AWS', 'Docker']
+    title: 'Sauda – Community Deals Platform',
+    whatExisted: 'Deal discovery in Pakistan was fragmented across social media, chats, and retailer sites, making it hard to judge deal quality and trustworthiness.',
+    whatWasBuilt: 'A community-driven deals platform where users post offers, vote, and discuss deals, with built-in validation through structured inputs, voting, and reporting.',
+    whatChanged: 'Created a transparent system for surfacing genuine deals and filtering low-quality posts, laying the foundation for a scalable savings community.',
+    tech: ['Next.js', 'Supabase', 'PostgreSQL', 'Vercel'],
+    link: 'https://sauda-hvdo.vercel.app'
   },
   {
-    title: 'Appointment Booking Automation',
-    whatExisted: 'Manual appointment scheduling that was time-consuming and error-prone for a service business, leading to double bookings and missed opportunities.',
-    whatWasBuilt: 'A voice bot integrated with calendar systems and CRM, automating the entire booking workflow with natural language processing. The system handles availability checks, conflict resolution, and sends automated confirmations.',
-    whatChanged: 'Reduced booking time by 80% and eliminated scheduling conflicts. Handles 200+ bookings per week automatically.',
-    tech: ['Python', 'Twilio', 'REST APIs', 'CRM Integration', 'NLP']
+    title: 'Receipt to Excel Automation',
+    whatExisted: 'Business needed to extract receipt data and organize it into structured Excel reports for accounting, requiring hours of manual data entry each month.',
+    whatWasBuilt: 'An automated system that processes receipts via OCR, extracts key data (date, amount, vendor, category), and generates formatted Excel files with proper categorization and totals.',
+    whatChanged: 'Reduced manual data entry time from hours to minutes per month. 99% accuracy in data extraction.',
+    tech: ['React', 'TypeScript', 'ExcelJS', 'Google Cloud Vision', 'Vercel'],
+    link: 'https://receipt-to-excel.vercel.app'
+  },
+  {
+    title: 'Remembered - Legacy call Automation',
+    whatExisted: 'Manual appointment scheduling via phone was slow, error-prone, and prone to double bookings, leading to missed appointments and frustrated staff.',
+    whatWasBuilt: 'A voice bot integrated with calendars and CRM systems to handle inbound calls, understand natural language, and automatically schedule appointments, including conflict resolution.',
+    whatChanged: 'Reduced booking time by 80% and eliminated scheduling conflicts, managing 200+ bookings per week without manual intervention.',
+    tech: ['Python', 'vapi', 'REST APIs', 'CRM Integration'],
+    link: 'https://remembered-brown.vercel.app'
   },
   {
     title: 'Lead Processing Pipeline',
@@ -28,13 +47,6 @@ const systems = [
     whatWasBuilt: 'An automated pipeline that captures, validates, enriches, and routes leads to appropriate team members with real-time notifications. Includes duplicate detection and lead scoring.',
     whatChanged: 'Processed 500+ leads per month automatically with 95% accuracy. Reduced response time from hours to minutes.',
     tech: ['Node.js', 'PostgreSQL', 'Webhooks', 'Email Automation', 'API Integrations']
-  },
-  {
-    title: 'Receipt to Excel Automation',
-    whatExisted: 'Business needed to extract receipt data and organize it into structured Excel reports for accounting, requiring hours of manual data entry each month.',
-    whatWasBuilt: 'An automated system that processes receipts via OCR, extracts key data (date, amount, vendor, category), and generates formatted Excel files with proper categorization and totals.',
-    whatChanged: 'Reduced manual data entry time from hours to minutes per month. 99% accuracy in data extraction.',
-    tech: ['Python', 'OCR APIs', 'Excel Automation', 'Data Processing', 'Image Processing']
   },
   {
     title: 'E-commerce Integration System',
@@ -54,15 +66,15 @@ const systems = [
 
 export default function SystemsWorkPage() {
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex items-center gap-3 text-muted mb-4">
+        <div className="mb-12">
+          <div className="flex items-center gap-3 text-muted mb-3">
             <span className="text-terminal-green">$</span>
             <span className="font-mono text-sm">ls ./work --detailed</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-3">
             Systems & Work
           </h1>
           <p className="text-lg text-muted max-w-2xl">
@@ -70,7 +82,7 @@ export default function SystemsWorkPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-10">
           {systems.map((system, index) => (
             <SystemWorkCard
               key={index}
@@ -79,14 +91,15 @@ export default function SystemsWorkPage() {
               whatWasBuilt={system.whatWasBuilt}
               whatChanged={system.whatChanged}
               tech={system.tech}
+              link={system.link}
             />
           ))}
         </div>
 
         {/* CTA */}
-        <div className="border border-border bg-card p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Have a System to Build?</h2>
-          <p className="text-muted mb-6">
+        <div className="border border-border bg-card p-6 text-center">
+          <h2 className="text-2xl font-bold mb-3">Have a System to Build?</h2>
+          <p className="text-muted mb-4">
             Let&apos;s discuss how I can help with your next project.
           </p>
           <Link

@@ -9,23 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#050505',
-        foreground: '#e8e4d9',
+        background: '#fafafa',
+        foreground: '#1a1a1a',
         accent: {
-          DEFAULT: '#f59e0b',
-          dim: '#b45309',
-          glow: 'rgba(245, 158, 11, 0.15)',
+          DEFAULT: '#6366f1',
+          dim: '#4f46e5',
+          glow: 'rgba(99, 102, 241, 0.1)',
+          secondary: '#8b5cf6',
+          'secondary-dim': '#7c3aed',
+          'secondary-glow': 'rgba(139, 92, 246, 0.1)',
+          tertiary: '#06b6d4',
+          'tertiary-dim': '#0891b2',
         },
         terminal: {
-          green: '#22c55e',
+          green: '#10b981',
           red: '#ef4444',
-          amber: '#f59e0b',
+          amber: '#6366f1',
         },
-        muted: '#525252',
-        border: '#262626',
+        muted: '#71717a',
+        border: '#e4e4e7',
         card: {
-          DEFAULT: '#0a0a0a',
-          hover: '#111111',
+          DEFAULT: '#ffffff',
+          hover: '#fafafa',
         },
       },
       fontFamily: {
@@ -36,7 +41,10 @@ const config: Config = {
         'glitch': 'glitch 0.3s ease-in-out',
         'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
         'marquee': 'marquee 30s linear infinite',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-slow': 'pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'scale-in': 'scale-in 0.3s ease-out',
+        'float': 'float 3s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
       },
       keyframes: {
         blink: {
@@ -49,7 +57,7 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        'grid-pattern': 'linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px)',
+        'grid-pattern': 'linear-gradient(rgba(99, 102, 241, 0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.015) 1px, transparent 1px)',
       },
     },
   },

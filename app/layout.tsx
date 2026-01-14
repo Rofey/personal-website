@@ -63,13 +63,18 @@ export default function RootLayout({
       <head>
         <StructuredData />
       </head>
-      <body className={`${jetbrainsMono.className} antialiased`}>
-        {/* Scanline overlay for CRT effect */}
-        <div className="scanlines" aria-hidden="true" />
+      <body className="antialiased">
+        {/* Skip to content link for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-background focus:font-bold focus:rounded"
+        >
+          Skip to main content
+        </a>
         {/* Grid background */}
         <div className="grid-bg" aria-hidden="true" />
         <Header />
-        <main className="min-h-screen relative z-10">
+        <main id="main-content" className="min-h-screen relative z-10">
           {children}
         </main>
         <Footer />

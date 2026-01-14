@@ -9,15 +9,11 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex items-center gap-3 text-muted mb-4">
-            <span className="text-terminal-green">$</span>
-            <span className="font-mono text-sm">cat services.json</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+        <div className="mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-3">
             Services
           </h1>
           <p className="text-lg text-muted max-w-2xl">
@@ -25,7 +21,7 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-12">
           <div className="md:col-span-2">
             <ServiceCard
               title="Web Applications"
@@ -99,16 +95,16 @@ export default function ServicesPage() {
         </div>
 
         {/* CTA */}
-        <div className="border border-border bg-card p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to Build Something?</h2>
-          <p className="text-muted mb-6">
+        <div className="border border-border bg-card p-6 text-center">
+          <h2 className="text-2xl font-bold mb-3">Ready to Build Something?</h2>
+          <p className="text-muted mb-4">
             Let&apos;s discuss how I can help with your next project.
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dim text-background font-bold transition-all hover:scale-[1.02] glow-box"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dim text-background font-bold transition-colors"
           >
-            ./start-conversation →
+            Get In Touch →
           </Link>
         </div>
       </div>

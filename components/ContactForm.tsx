@@ -2,15 +2,82 @@
 
 import { useState } from 'react'
 
+interface FormErrors {
+  name?: string
+  email?: string
+  message?: string
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
+
+  const validateField = (name: string, value: string): string | undefined => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Name is required'
+        if (value.trim().length < 2) return 'Name must be at least 2 characters'
+        return undefined
+      case 'email':
+        if (!value.trim()) return 'Email is required'
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(value)) return 'Please enter a valid email address'
+        return undefined
+      case 'message':
+        if (!value.trim()) return 'Message is required'
+        if (value.trim().length < 10) return 'Message must be at least 10 characters'
+        return undefined
+      default:
+        return undefined
+    }
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const fieldName = e.target.name
+    const fieldValue = e.target.value
+    setTouched(prev => ({ ...prev, [fieldName]: true }))
+    const error = validateField(fieldName, fieldValue)
+    setErrors(prev => ({ ...prev, [fieldName]: error }))
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const fieldName = e.target.name
+    const fieldValue = e.target.value
+    
+    // Clear error when user starts typing
+    if (errors[fieldName as keyof FormErrors] && touched[fieldName]) {
+      const error = validateField(fieldName, fieldValue)
+      setErrors(prev => ({ ...prev, [fieldName]: error }))
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setStatus('sending')
-
+    
     const form = e.currentTarget
     const formData = new FormData(form)
+    
+    // Validate all fields
+    const newErrors: FormErrors = {}
+    let hasErrors = false
+    
+    for (const [name, value] of formData.entries()) {
+      const error = validateField(name, String(value))
+      if (error) {
+        newErrors[name as keyof FormErrors] = error
+        hasErrors = true
+      }
+    }
+    
+    if (hasErrors) {
+      setErrors(newErrors)
+      setTouched({ name: true, email: true, message: true })
+      return
+    }
+    
+    setStatus('sending')
+    setErrors({})
 
     try {
       const response = await fetch('https://formspree.io/f/meeozyzy', {
@@ -24,6 +91,8 @@ export default function ContactForm() {
       if (response.ok) {
         setStatus('success')
         form.reset()
+        setTouched({})
+        setErrors({})
       } else {
         setStatus('error')
       }
@@ -43,9 +112,22 @@ export default function ContactForm() {
           id="name"
           name="name"
           required
-          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          aria-invalid={errors.name ? 'true' : 'false'}
+          aria-describedby={errors.name ? 'name-error' : undefined}
+          className={`w-full px-4 py-3 bg-card border text-foreground font-mono focus:outline-none transition-colors ${
+            errors.name && touched.name
+              ? 'border-terminal-red focus:border-terminal-red'
+              : 'border-border focus:border-accent'
+          }`}
           placeholder="Your name"
         />
+        {errors.name && touched.name && (
+          <p id="name-error" className="mt-1 text-xs text-terminal-red font-mono" role="alert">
+            {errors.name}
+          </p>
+        )}
       </div>
 
       <div>
@@ -57,9 +139,22 @@ export default function ContactForm() {
           id="email"
           name="email"
           required
-          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          aria-invalid={errors.email ? 'true' : 'false'}
+          aria-describedby={errors.email ? 'email-error' : undefined}
+          className={`w-full px-4 py-3 bg-card border text-foreground font-mono focus:outline-none transition-colors ${
+            errors.email && touched.email
+              ? 'border-terminal-red focus:border-terminal-red'
+              : 'border-border focus:border-accent'
+          }`}
           placeholder="you@example.com"
         />
+        {errors.email && touched.email && (
+          <p id="email-error" className="mt-1 text-xs text-terminal-red font-mono" role="alert">
+            {errors.email}
+          </p>
+        )}
       </div>
 
       <div>
@@ -84,9 +179,22 @@ export default function ContactForm() {
           name="message"
           required
           rows={6}
-          className="w-full px-4 py-3 bg-card border border-border text-foreground font-mono focus:outline-none focus:border-accent transition-colors resize-none"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          aria-invalid={errors.message ? 'true' : 'false'}
+          aria-describedby={errors.message ? 'message-error' : undefined}
+          className={`w-full px-4 py-3 bg-card border text-foreground font-mono focus:outline-none transition-colors resize-none ${
+            errors.message && touched.message
+              ? 'border-terminal-red focus:border-terminal-red'
+              : 'border-border focus:border-accent'
+          }`}
           placeholder="Tell me about your project..."
         />
+        {errors.message && touched.message && (
+          <p id="message-error" className="mt-1 text-xs text-terminal-red font-mono" role="alert">
+            {errors.message}
+          </p>
+        )}
       </div>
 
       {status === 'success' && (

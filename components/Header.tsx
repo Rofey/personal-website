@@ -2,21 +2,60 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
-
-const navLinks = [
-  { href: '/', label: 'index' },
-  { href: '/services', label: 'services' },
-  { href: '/systems-work', label: 'work' },
-  { href: '/about', label: 'about' },
-]
+import { useState, useEffect, useRef } from 'react'
+import { NAV_LINKS } from '@/lib/constants'
 
 export default function Header() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Close menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [mobileMenuOpen])
+
+  // Close menu on ESC key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false)
+        buttonRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [mobileMenuOpen])
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -24,16 +63,22 @@ export default function Header() {
             href="/" 
             className="group relative flex items-center gap-2"
           >
-            <span className="text-accent text-lg">{'>'}</span>
-            <span className="text-lg font-bold text-foreground glitch-hover">
-              rofeyy
+            <span className="relative">
+              <span className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-accent via-accent-secondary to-accent-tertiary bg-clip-text text-transparent group-hover:from-accent-secondary group-hover:via-accent-tertiary group-hover:to-accent transition-all duration-500">
+                Rofeyy
+              </span>
+              {/* Subtle glow effect on hover */}
+              <span className="absolute inset-0 text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-accent via-accent-secondary to-accent-tertiary bg-clip-text text-transparent opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-500">
+                Rofeyy
+              </span>
             </span>
-            <span className="w-2 h-4 bg-accent/80 animate-cursor-blink" />
+            {/* Decorative dot */}
+            <span className="w-2 h-2 rounded-full bg-gradient-to-r from-accent-secondary to-accent-tertiary opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300" />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link, index) => (
+            {NAV_LINKS.map((link) => (
               <Link 
                 key={link.href}
                 href={link.href} 
@@ -45,7 +90,6 @@ export default function Header() {
                   }
                 `}
               >
-                <span className="text-muted mr-1">{String(index).padStart(2, '0')}.</span>
                 {link.label}
                 {pathname === link.href && (
                   <span className="absolute bottom-0 left-4 right-4 h-px bg-accent" />
@@ -55,17 +99,20 @@ export default function Header() {
             <div className="w-px h-6 bg-border mx-2" />
             <Link 
               href="/contact" 
-              className="ml-2 px-4 py-2 bg-accent hover:bg-accent-dim text-background text-sm font-bold transition-all hover:scale-[1.02]"
+              className="ml-2 px-5 py-2 bg-gradient-to-r from-accent via-accent-secondary to-accent-tertiary hover:from-accent-dim hover:via-accent-secondary-dim hover:to-accent-tertiary-dim text-background text-sm font-bold transition-all shadow-sm hover:shadow-md rounded-md"
             >
-              contact()
+              Contact
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button 
+            ref={buttonRef}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden flex flex-col gap-1.5 p-2"
-            aria-label="Toggle menu"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <span className={`w-6 h-0.5 bg-foreground transition-transform ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
             <span className={`w-6 h-0.5 bg-foreground transition-opacity ${mobileMenuOpen ? 'opacity-0' : ''}`} />
@@ -75,9 +122,14 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <div 
+            id="mobile-menu"
+            ref={menuRef}
+            className="md:hidden py-4 border-t border-border"
+            role="menu"
+          >
             <div className="flex flex-col gap-2">
-              {navLinks.map((link, index) => (
+              {NAV_LINKS.map((link) => (
                 <Link 
                   key={link.href}
                   href={link.href}
@@ -90,16 +142,15 @@ export default function Header() {
                     }
                   `}
                 >
-                  <span className="text-muted mr-2">{String(index).padStart(2, '0')}.</span>
                   {link.label}
                 </Link>
               ))}
               <Link 
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mx-4 mt-2 px-4 py-3 bg-accent hover:bg-accent-dim text-background text-sm font-bold text-center transition-all"
+                className="mx-4 mt-2 px-4 py-3 bg-gradient-to-r from-accent via-accent-secondary to-accent-tertiary hover:from-accent-dim hover:via-accent-secondary-dim hover:to-accent-tertiary-dim text-background text-sm font-bold text-center transition-all shadow-sm rounded-md"
               >
-                contact()
+                Contact
               </Link>
             </div>
           </div>

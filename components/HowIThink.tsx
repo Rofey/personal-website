@@ -1,29 +1,27 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import CodeSnippet from './CodeSnippet'
+import IconCode from './icons/IconCode'
 
 const steps = [
   {
     number: '01',
-    command: 'analyze --root-cause',
     title: 'Understand the real problem',
     description: 'Before writing code, I dig into what actually needs to be solved. Not the symptom, but the root cause.',
   },
   {
     number: '02',
-    command: 'design --simple --reliable',
     title: 'Design simple, reliable systems',
     description: 'Complex problems don\'t always need complex solutions. I build systems that are straightforward to understand and maintain.',
   },
   {
     number: '03',
-    command: 'automate --if="count > 1"',
     title: 'Automate repetitive work',
     description: 'If a task is done more than once, it should be automated. This frees up time for work that actually requires human judgment.',
   },
   {
     number: '04',
-    command: 'build --scale=production',
     title: 'Build for scale, not demos',
     description: 'I design systems that work when traffic grows, when data increases, and when requirements evolve. Real-world ready.',
   },
@@ -60,19 +58,15 @@ export default function HowIThink() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 border-y border-border">
+    <section ref={sectionRef} className="py-16 border-y border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-16">
-            <div className="flex items-center gap-3 text-muted mb-4">
-              <span className="text-terminal-green">$</span>
-              <span className="font-mono text-sm">cat philosophy.md</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-4xl sm:text-5xl font-extrabold mb-4">
               How I Think About Software
             </h2>
-            <p className="text-muted text-lg max-w-2xl">
+            <p className="text-muted text-xl max-w-3xl leading-relaxed">
               Engineering maturity, not marketing. A practical approach to building systems that last.
             </p>
           </div>
@@ -80,7 +74,7 @@ export default function HowIThink() {
           {/* Steps */}
           <div className="relative">
             {/* Vertical line */}
-            <div className="absolute left-[1.1rem] top-0 bottom-0 w-px bg-border hidden sm:block" />
+            <div className="absolute left-[1.1rem] top-0 bottom-0 w-px bg-gradient-to-b from-accent/20 via-accent-secondary/20 to-accent-tertiary/20 hidden sm:block" />
             
             <div className="space-y-0">
               {steps.map((step, index) => (
@@ -96,24 +90,42 @@ export default function HowIThink() {
                   <div className="flex gap-6 items-start group py-6">
                     {/* Number indicator */}
                     <div className="flex-shrink-0 relative">
-                      <div className="w-9 h-9 flex items-center justify-center border-2 border-border bg-background group-hover:border-accent group-hover:text-accent transition-colors font-bold text-sm z-10 relative">
+                      <div className="w-10 h-10 flex items-center justify-center border-2 border-border bg-background group-hover:border-accent group-hover:bg-accent/5 group-hover:text-accent transition-all font-bold text-sm z-10 relative rounded-lg shadow-sm group-hover:shadow-md">
                         {step.number}
                       </div>
                     </div>
                     
                     {/* Content */}
-                    <div className="flex-1 pb-6 border-b border-border group-hover:border-accent/30 transition-colors">
-                      {/* Command */}
-                      <div className="text-xs font-mono text-accent/70 mb-2">
-                        <span className="text-terminal-green">→</span> {step.command}
-                      </div>
-                      
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">
+                    <div className="flex-1 pb-6 border-b border-border/50 group-hover:border-accent/30 transition-colors">
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-accent transition-colors">
                         {step.title}
                       </h3>
-                      <p className="text-muted leading-relaxed">
+                      <p className="text-muted leading-relaxed text-base">
                         {step.description}
                       </p>
+                      
+                      {/* Code snippet for step 2 */}
+                      {index === 1 && (
+                        <div className="mt-4">
+                          <CodeSnippet
+                            code={`// Simple, maintainable architecture
+class UserService {
+  async getUser(id: string) {
+    return db.users.findOne({ id })
+  }
+}`}
+                            language="typescript"
+                          />
+                        </div>
+                      )}
+                      
+                      {/* Visual diagram for step 4 */}
+                      {index === 3 && (
+                        <div className="mt-4 flex items-center gap-2 text-sm text-muted">
+                          <IconCode size={16} className="text-accent-secondary" />
+                          <span className="font-mono">Scalable → Reliable → Maintainable</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -6,7 +6,7 @@ export function StructuredData() {
     "url": "https://rofeyy.com",
     "sameAs": [
       "https://github.com/rofey",
-      "https://linkedin.com/in/rofey"
+      "https://linkedin.com/in/rofey",
     ],
     "jobTitle": "Software Engineer",
     "description": "Software engineer building systems that actually work in the real world. Web applications, automation, and scalable software solutions.",

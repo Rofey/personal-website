@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import { SOCIAL_LINKS, TECH_STACK } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'About - Full-Stack Software Engineer',
@@ -8,20 +9,16 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <div className="flex items-center gap-3 text-muted mb-4">
-            <span className="text-terminal-green">$</span>
-            <span className="font-mono text-sm">whoami --verbose</span>
-          </div>
+        <div className="mb-8">
           <h1 className="text-4xl sm:text-5xl font-bold">
             About
           </h1>
         </div>
 
-        <div className="space-y-8 text-lg text-muted leading-relaxed">
+        <div className="space-y-6 text-lg text-muted leading-relaxed">
           <p>
             I&apos;m a full-stack software engineer who builds applications designed to last. From 
             frontend interfaces to backend systems, I create reliable solutions that solve real problems.
@@ -34,9 +31,9 @@ export default function AboutPage() {
           </p>
 
           {/* What I Do */}
-          <div className="border border-border bg-card p-6 mt-8">
-            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <span className="text-accent">//</span> What I Do
+          <div className="border border-border bg-card p-6 mt-6">
+            <h2 className="text-xl font-bold text-foreground mb-3">
+              What I Do
             </h2>
             <ul className="space-y-3 text-muted">
               {[
@@ -56,8 +53,8 @@ export default function AboutPage() {
 
           {/* Approach */}
           <div className="border border-border bg-card p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <span className="text-accent">//</span> My Approach
+            <h2 className="text-xl font-bold text-foreground mb-3">
+              My Approach
             </h2>
             <p className="text-muted">
               I build software designed to last, not just to impress. My approach is practical: 
@@ -68,11 +65,11 @@ export default function AboutPage() {
 
           {/* Tech */}
           <div className="border border-border bg-card p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <span className="text-accent">//</span> Technologies
+            <h2 className="text-xl font-bold text-foreground mb-3">
+              Technologies
             </h2>
             <div className="flex flex-wrap gap-2">
-              {['React', 'Next.js', 'TypeScript', 'Node.js', 'Java', 'Spring Boot', 'PostgreSQL', 'AWS', 'Python', 'Tailwind CSS'].map((tech) => (
+              {TECH_STACK.map((tech) => (
                 <span 
                   key={tech}
                   className="text-sm font-mono px-3 py-1 bg-accent/10 text-accent border border-accent/20"
@@ -85,33 +82,33 @@ export default function AboutPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 text-center">
+        <div className="mt-8 text-center">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dim text-background font-bold transition-all hover:scale-[1.02] glow-box"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dim text-background font-bold transition-colors"
           >
-            ./work-together →
+            Work Together →
           </Link>
         </div>
 
         {/* Social links */}
-        <div className="mt-12 pt-8 border-t border-border">
+        <div className="mt-8 pt-6 border-t border-border">
           <div className="flex justify-center gap-6">
             <a 
-              href="https://github.com/rofey" 
+              href={SOCIAL_LINKS.github} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-muted hover:text-accent transition-colors font-mono text-sm"
+              className="text-muted hover:text-accent transition-colors text-sm"
             >
-              [github]
+              GitHub
             </a>
             <a 
-              href="https://linkedin.com/in/rofey" 
+              href={SOCIAL_LINKS.linkedin} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-muted hover:text-accent transition-colors font-mono text-sm"
+              className="text-muted hover:text-accent transition-colors text-sm"
             >
-              [linkedin]
+              LinkedIn
             </a>
           </div>
         </div>
